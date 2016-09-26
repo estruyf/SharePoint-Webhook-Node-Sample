@@ -1,0 +1,13 @@
+{
+    "adalConfig": {
+        "authority": "https://login.microsoftonline.com/tenant.onmicrosoft.com",
+        "clientID": "your-azure-ad-clientId",
+        "subscriptionUrl": "https://local-or-production-site/listen",
+        "resource": "https://yoursite.sharepoint.com",
+        "fingerPrint": "your-certificate-fingerprint"
+    },
+    "webhookConfig": {
+        "url": "https://yoursite.sharepoint.com/",
+        "listName": "Documents"
+    }
+}

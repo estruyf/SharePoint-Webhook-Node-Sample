@@ -1,0 +1,9 @@
+node_modules
+typings
+local-settings
+
+config.json
+
+*.js
+*.js.map
+*.pem
