@@ -36,6 +36,8 @@ In the linked article you can read how to do it for a C# application. This can b
 ],
 ```
 
+![keyCredentials config](./assets/manifest.png)
+
 - In your folder, create a new **privatekey.pem** file and paste in the private key information:
 
 ```
