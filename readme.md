@@ -2,7 +2,7 @@
 
 This is a sample webhook application built with the use of Node.js. Feel free to explore.
 
-![Notification sample](./assets/notifications.png)
+![Notification sample](./assets/homepage-view.png)
 
 ## Azure AD application and certificate configuration
 To test out this sample, you will have to create a service application on Azure AD. 

@@ -1,5 +1,6 @@
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
+import * as path from 'path';
 
 import HomeRoutes from './routes/home';
 
@@ -17,14 +18,16 @@ class SPWebHook {
         this.start();
     }
 
-    private config() {
+    private config(): void {
         // Mount json form parser
         this.app.use(bodyParser.json());
         // Mount query string parser
         this.app.use(bodyParser.urlencoded({ extended: true }));
+        // Add static paths
+        this.app.use(express.static(path.join(__dirname, "../public")));
     }
 
-    private routes() {
+    private routes(): void {
         // Create routes
         let home: HomeRoutes = new HomeRoutes();
         // Home routes

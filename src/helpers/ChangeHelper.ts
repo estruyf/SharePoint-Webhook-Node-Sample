@@ -43,7 +43,12 @@ export default class ChangeHelper {
 
     private getListChanges(subVal: ISubscriptionValue, token: string): Promise<any> {
         return new Promise((resolve, reject) => {
-            // Get the absolute web URL
+            /*
+             * Get the absolute web URL
+             *  INFO: 
+             *  You do not have to do this call if you store the information in a database. 
+             *  This is a sample if you do not know where the webhook is coming from.
+             */
             this.getAbsWebUrl(subVal, token).then((data) => {
                 if (data !== null) {
                     // Check if the change token is null
@@ -91,11 +96,12 @@ export default class ChangeHelper {
                             let result = JSON.parse(body);
                             if (result.value.length > 0) {   
                                 result.value.forEach((resVal: ISPChangeItem) => {
-                                    let change = [];
-                                    change['ItemId'] = resVal.ItemId;
-                                    change['WebUrl'] = data.Url;
-                                    change['ListId'] = resVal.ListId;
-                                    change['ChangeType'] = ChangeType[resVal.ChangeType];
+                                    let change = {
+                                        "ItemId": resVal.ItemId,
+                                        "WebUrl": data.Url,
+                                        "ListId": resVal.ListId,
+                                        "ChangeType": ChangeType[resVal.ChangeType]
+                                    }
                                     changes.push(change);
 
                                     // Temp store the change token

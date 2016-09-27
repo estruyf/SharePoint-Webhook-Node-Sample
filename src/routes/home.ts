@@ -1,6 +1,7 @@
 import * as express from "express";
 import * as request from 'request';
 import * as moment from 'moment';
+import * as fs from 'fs';
 
 import TokenHelper from '../helpers/TokenHelper';
 import ChangeHelper from '../helpers/ChangeHelper';
@@ -20,8 +21,7 @@ export default class HomeRoutes {
 
     public routes(): express.Router {
         this.router.get('/', (req: express.Request, res: express.Response) => {
-            res.send('Go to <a href="http://localhost:3000/create">http://localhost:3000/create</a>');
-            res.status(200);
+            res.sendfile('/index.html');
         });
 
         // List all the subscriptions on the list
@@ -47,6 +47,38 @@ export default class HomeRoutes {
                     res.status(200);
                 });
             });
+        });
+
+        // Update a subscription
+        this.router.get('/update/:subId', (req: any, res: express.Response) => {
+            var subId = req.params.subId;
+            if (subId !== null) {
+                this.tokenHelper.getAppOnlyAccessToken(config).then((token) => {
+                    request({
+                        method: 'PATCH',
+                        uri: `${config.webhookConfig.url}/_api/web/lists/getbytitle('${config.webhookConfig.listName}')/subscriptions('${subId}')`,
+                        headers: {
+                            'Authorization': 'Bearer ' + token,
+                            'Accept': 'application/json;odata=nometadata',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            "expirationDateTime": moment().add(90, 'days')
+                        })
+                    }, (error, resp, body) => {
+                        if (error !== null) {
+                            console.log('ERROR:', error);
+                            res.send(error);
+                            res.status(400);
+                            return;
+                        }
+
+                        res.sendStatus(200);
+                    });
+                });
+            } else {
+                res.sendStatus(400);
+            }
         });
 
         // Delete a subscription
@@ -87,6 +119,22 @@ export default class HomeRoutes {
             } else {
                 this.changeHelper.check(req.body).then((data) => {
                     console.log(data);
+                    
+                    /* Write to file */
+                    // Write changes to file -> this can be updated to a database or queue mechanism
+                    const fileName = __dirname + '/../../public/webhook.txt';
+                    fs.exists(fileName, (exists) => {
+                        let fileData = "";
+                        if (exists) {
+                            fileData = fs.readFileSync(fileName, 'utf-8');
+                        }
+                        let txtFile = "";
+                        txtFile += `<b>Retrieved</b>: ${moment().toISOString()}</br>`;
+                        txtFile += JSON.stringify(data);
+                        fileData = txtFile + '</br></br>' + fileData;
+                        fs.writeFileSync(fileName, fileData, 'utf-8');
+                    });
+
                     res.sendStatus(200);
                 }).catch((err) => {
                     res.sendStatus(400);
