@@ -19,7 +19,7 @@ In the linked article you can read how to do it for a C# application. This can b
 - Once you provided all the info, your certificate gets created:
 ![Certificate information](./assets/certificate.png)
 
-- Add the flowing information in your Azure AD manifest file:
+- Add the following information in your Azure AD manifest file:
     - customKeyIdentifier
     - value
     - keyId
