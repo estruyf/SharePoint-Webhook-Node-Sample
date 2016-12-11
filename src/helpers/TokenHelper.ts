@@ -3,7 +3,7 @@ import * as fs from 'fs';
 import { IConfig } from '../Interfaces/IConfig';
 
 const adal: any = require('adal-node');
-const certificate = fs.readFileSync(__dirname + '../../../privatekey.pem', { encoding : 'utf8'});
+const certificate = fs.readFileSync('privatekey.pem', { encoding : 'utf8'});
 
 export default class TokenHelper {
     constructor() {}

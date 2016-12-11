@@ -4,7 +4,8 @@
   "description": "",
   "main": "./src/index.js",
   "scripts": {
-    "start": "gulp typescript & node ./src/index.js"
+    "start": "node ./src/index.js",
+    "debug": "gulp typescript & node ./src/index.js"
   },
   "author": "Elio Struyf <info@estruyf.be> (http://www.eliostruyf.com)",
   "license": "MIT",
