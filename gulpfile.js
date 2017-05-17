@@ -1,7 +1,10 @@
 var gulp = require('gulp'),
     tsc = require('gulp-typescript'),
     sourcemaps = require('gulp-sourcemaps'),
-    path = require('path');
+    path = require('path'),
+    jwt = require('jsonwebtoken'),
+    fs = require('fs'),
+    argv = require('yargs').argv
 
 gulp.task('default', ['transpile'], () => {});
 
@@ -21,4 +24,12 @@ gulp.task("transpile", () => {
 
 gulp.task("watch", () => {
     gulp.watch("**/*.ts", ["transpile"]);
+});
+
+
+// Use it: gulp decode --token jwt-token
+gulp.task("decode", () => {
+    const token = argv.token;
+    var decoded = jwt.decode(token);
+    console.log(decoded);
 });
