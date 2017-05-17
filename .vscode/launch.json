@@ -1,25 +1,23 @@
 {
+    // Use IntelliSense to learn about possible Node.js debug attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Launch",
             "type": "node",
             "request": "launch",
-            "program": "${workspaceRoot}/src/index.js",
-            "stopOnEntry": false,
-            "args": [],
-            "cwd": "${workspaceRoot}",
-            "preLaunchTask": "typescript",
-            "runtimeExecutable": null,
-            "runtimeArgs": [
-                "--nolazy"
+            "name": "Launch webhook site",
+            "program": "${workspaceRoot}/src/index.ts",
+            "outFiles": [
+                "${workspaceRoot}/dist/**/*.js"
             ],
+            "preLaunchTask": "transpile", // Gulp task
+            // "preLaunchTask": "transpile-ts", // NPM task
             "env": {
                 "NODE_ENV": "development"
             },
-            "console": "internalConsole",
-            "sourceMaps": true,
-            "outDir": null
+            "sourceMaps": true
         }
     ]
 }

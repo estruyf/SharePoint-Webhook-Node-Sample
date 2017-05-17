@@ -6,7 +6,12 @@ config.json
 
 public/webhook.txt
 
-src/**/*.js
-*.js.map
+dist/**/*.js
+dist/**/*.js.map
 *.pem
 *.log
+
+keycred.txt
+*.lock
+*.json-old
+ngrok

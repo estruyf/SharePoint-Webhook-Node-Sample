@@ -1,18 +1,24 @@
 var gulp = require('gulp'),
-    ts = require('gulp-typescript'),
-    sourcemaps = require('gulp-sourcemaps');
+    tsc = require('gulp-typescript'),
+    sourcemaps = require('gulp-sourcemaps'),
+    path = require('path');
 
-gulp.task('default', ['typescript'], () => {});
+gulp.task('default', ['transpile'], () => {});
 
-gulp.task('typescript', () => {
-    gulp.src('./src/**/*.ts')
+var tsProject = tsc.createProject("tsconfig.json");
+
+gulp.task("transpile", () => {
+    var tsResult = tsProject.src()
         .pipe(sourcemaps.init())
-        .pipe(ts())
-        .pipe(sourcemaps.write('maps'))
-        .pipe(gulp.dest('./src/'));
+        .pipe(tsProject());
+    return tsResult.js.pipe(sourcemaps.write('.', {
+            includeContent: false,
+            sourceRoot: '../dist/'
+        }))
+        .pipe(gulp.dest('dist'));
 });
 
 
-gulp.task('watch:typescript', () => {
-    gulp.watch('./src/**/*.ts', ['typescript']);
+gulp.task("watch", () => {
+    gulp.watch("**/*.ts", ["transpile"]);
 });

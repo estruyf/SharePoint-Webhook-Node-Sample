@@ -70,6 +70,6 @@ Follow the next steps if you want to test it out:
 - open another command prompt. Navigate to the ngrok folder and run:*
     - `$ ngrok http 3000`
     - copy the **https** forwarding URL of ngrok and use it in the config.json file for the **subscriptionUrl**
-- Run: `$ npm run debug` or if you already transpiled the TS files (via `$ gulp typescript`) you can run `$ npm start`
+- Run: `$ npm run debug` or if you already transpiled the TS files (via `$ gulp transpile`) you can run `$ npm start`
     - This transpiles TypeScript to JavaScript and start the server on http://localhost:3000
 - Navigate to http://localhost:3000/create which automatically creates a new subscription for the config you provided

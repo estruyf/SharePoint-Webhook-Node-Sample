@@ -1,7 +1,7 @@
 import * as request from 'request';
 import * as moment from 'moment';
 
-import TokenHelper from '../helpers/TokenHelper';
+import TokenHelper from './TokenHelper';
 
 import { IConfig } from '../Interfaces/IConfig';
 import { ISubscription, ISubscriptionValue } from '../Interfaces/ISubscription';
@@ -88,13 +88,13 @@ export default class ChangeHelper {
                             console.log(res.statusCode, JSON.parse(body));
                             resolve(null);
                         }
-                        
+
                         let changes = [];
 
                         // Check if there is no error in the body
                         if (body.indexOf('odata.error') === -1) {
                             let result = JSON.parse(body);
-                            if (result.value.length > 0) {   
+                            if (result.value.length > 0) {
                                 result.value.forEach((resVal: ISPChangeItem) => {
                                     let change = {
                                         "ItemId": resVal.ItemId,
@@ -146,8 +146,33 @@ export default class ChangeHelper {
                 if (typeof result.value !== "undefined" && result.value !== null) {
                     // Retrieved value sample: '{"value":[{"Url":"https://..."}]}'
                     let webVal = result.value;
-                    if (webVal.length > 0){
+                    if (webVal.length > 0) {
                         resolve(webVal[0]);
+                    } else if (webVal.length === 0) {
+                        // Check if the current webId of the site is equal to that of the webhook subscription
+                        request({
+                            uri: `${siteUrl}/_api/web?$select=Id`,
+                            headers: {
+                                'Authorization': 'Bearer ' + token,
+                                'Accept': 'application/json;odata=nometadata',
+                                'Content-Type': 'application/json'
+                            }
+                        }, (error, resp, body) => {
+                            if (error) {
+                                // Do something with the error
+                                reject(error);
+                            }
+                            let result = JSON.parse(body);
+                            if (typeof result.Id !== "undefined" && result.Id !== null) {
+                                if (result.Id === subVal.webId) {
+                                    resolve({ Url: siteUrl});
+                                } else {
+                                    resolve(null);
+                                }
+                            } else {
+                                resolve(null);
+                            }
+                        });
                     } else {
                         resolve(null);
                     }

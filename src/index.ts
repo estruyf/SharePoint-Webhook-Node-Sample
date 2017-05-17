@@ -3,6 +3,7 @@ import * as bodyParser from 'body-parser';
 import * as path from 'path';
 
 import HomeRoutes from './routes/home';
+import SubscriptionRoutes from "./routes/subscriptions";
 
 class SPWebHook {
     private app: express.Application;
@@ -30,8 +31,10 @@ class SPWebHook {
     private routes(): void {
         // Create routes
         let home: HomeRoutes = new HomeRoutes();
+        let subscription: SubscriptionRoutes = new SubscriptionRoutes();
         // Home routes
         this.app.use('/', home.routes());
+        this.app.use('/', subscription.routes());
     }
 
     private start(): void {
