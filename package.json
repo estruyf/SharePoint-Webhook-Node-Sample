@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node ./src/index.js",
     "debug": "gulp typescript & node ./src/index.js",
+    "tsc-gulp": "gulp transpile",
     "tsc": "tsc"
   },
   "author": "Elio Struyf <info@estruyf.be> (http://www.eliostruyf.com)",

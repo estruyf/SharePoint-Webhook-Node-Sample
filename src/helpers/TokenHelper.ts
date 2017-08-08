@@ -17,7 +17,7 @@ export default class TokenHelper {
                 if (err) {
                     reject(err);
                 }
-                var accesstoken = tokenRes.accessToken;
+                const accesstoken = tokenRes.accessToken;
                 resolve(accesstoken);
             });
         });

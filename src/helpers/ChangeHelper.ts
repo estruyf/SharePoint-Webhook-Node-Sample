@@ -130,7 +130,8 @@ export default class ChangeHelper {
 
             // Get the absolute web url
             request({
-                uri: `${siteUrl}/_api/web/webs?$filter=ID eq guid'${subVal.webId}'&$select=Url`,
+                uri: `${siteUrl}/_api/site/openWebById('${subVal.webId}')`,
+                method: 'POST',
                 headers: {
                     'Authorization': 'Bearer ' + token,
                     'Accept': 'application/json;odata=nometadata',
@@ -143,39 +144,11 @@ export default class ChangeHelper {
                 }
 
                 let result = JSON.parse(body);
-                if (typeof result.value !== "undefined" && result.value !== null) {
+                if (typeof result.Id !== "undefined" && result.Id === subVal.webId) {
                     // Retrieved value sample: '{"value":[{"Url":"https://..."}]}'
-                    let webVal = result.value;
-                    if (webVal.length > 0) {
-                        resolve(webVal[0]);
-                    } else if (webVal.length === 0) {
-                        // Check if the current webId of the site is equal to that of the webhook subscription
-                        request({
-                            uri: `${siteUrl}/_api/web?$select=Id`,
-                            headers: {
-                                'Authorization': 'Bearer ' + token,
-                                'Accept': 'application/json;odata=nometadata',
-                                'Content-Type': 'application/json'
-                            }
-                        }, (error, resp, body) => {
-                            if (error) {
-                                // Do something with the error
-                                reject(error);
-                            }
-                            let result = JSON.parse(body);
-                            if (typeof result.Id !== "undefined" && result.Id !== null) {
-                                if (result.Id === subVal.webId) {
-                                    resolve({ Url: siteUrl});
-                                } else {
-                                    resolve(null);
-                                }
-                            } else {
-                                resolve(null);
-                            }
-                        });
-                    } else {
-                        resolve(null);
-                    }
+                    resolve({ Url: result.Url });
+                } else {
+                    resolve(null);
                 }
             });
         });
