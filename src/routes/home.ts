@@ -36,13 +36,13 @@ export default class HomeRoutes {
                         fs.exists(fileName, (exists) => {
                             let fileData = "";
                             if (exists) {
-                                fileData = fs.readFileSync(fileName, 'utf-8');
+                                fileData = fs.readFileSync(fileName, 'utf8');
                             }
                             let txtFile = "";
                             txtFile += `<b>Retrieved</b>: ${moment().toISOString()}</br>`;
                             txtFile += JSON.stringify(data);
                             fileData = txtFile + '</br></br>' + fileData;
-                            fs.writeFileSync(fileName, fileData, 'utf-8');
+                            fs.writeFileSync(fileName, fileData, { encoding: 'utf8' });
                         });
                     }
                     res.sendStatus(200);
